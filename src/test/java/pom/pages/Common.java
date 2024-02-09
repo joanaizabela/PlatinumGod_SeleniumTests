@@ -34,7 +34,11 @@ public class Common {
     }
 
     public static String getAttribute(By locator, String attribute) {
-        return getElement(locator).getAttribute(attribute);
+        try {
+            return getElement(locator).getAttribute(attribute);
+        } catch (NoSuchElementException e) {
+            return "Element not found!";
+        }
     }
 
     public static void clickOnElement(By locator) {
@@ -44,6 +48,10 @@ public class Common {
     public static void hoverOnElement(By locator) {
         Actions actions = new Actions(Driver.getDriver());
         actions.moveToElement(getElement(locator)).perform();
+    }
+
+    public static void addText(By locator, String text) {
+        getElement(locator).sendKeys(text);
     }
 
     public static boolean waitForElementToBeVisible(By locator, int seconds) {
