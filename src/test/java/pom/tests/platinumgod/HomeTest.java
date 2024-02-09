@@ -14,25 +14,20 @@ public class HomeTest extends TestBase {
         HomePage.openUrl("https://tboi.com/");
     }
 
-    @Test
-    public void ts1_testIsTargetSearchResultVisible_positive() {
-        String searchString = "phd";
-        String targetItemID = "654";
-
-        HomePage.writeSearchString(searchString);
-        boolean isItemVisible = HomePage.checkIfItemVisible(targetItemID);
-
-        Assert.assertTrue(isItemVisible);
+    @DataProvider (name = "searchResultVisibility")
+    public Object[][] provideDataForSearch() {
+        return new Object[][] {
+                {"phd", "654", true},
+                {"PhD", "10", false},
+                {"  hAbit ", "156", true},
+                {"11", "11", true}
+        };
     }
-
-    @Test
-    public void ts1_testIsTargetSearchResultVisible_negative() {
-        String searchString = "phd";
-        String targetItemID = "13";
-
+    @Test (dataProvider = "searchResultVisibility")
+    public void ts1_testIsTargetSearchResultVisible(String searchString, String targetItemID, boolean shouldBeVisible) {
         HomePage.writeSearchString(searchString);
         boolean isItemVisible = HomePage.checkIfItemVisible(targetItemID);
 
-        Assert.assertFalse(isItemVisible);
+        Assert.assertEquals(isItemVisible, shouldBeVisible);
     }
 }
